@@ -631,16 +631,26 @@ func (d *driver) VolumeDetach(
 
 	iid := context.MustInstanceID(ctx)
 
+	if vol, err := d.VolumeInspect(ctx, volumeID, &types.VolumeInspectOpts{Attachments: types.VolAttReq}); err == nil {
+		if len(vol.Attachments) > 0 {
+			attachementID:= vol.Attachments[0].AttachmentID
+		}
+		else
+		{
+			return nil, "", err
+		}
+	}
+
 	fields := eff(map[string]interface{}{
-		"volumeId":   volumeID,
+		"attachementID":   attachementID,
 		"instanceId": iid.ID,
 	})
 
-	if volumeID == "" {
-		return nil, goof.WithFields(fields, "volumeId is required")
+	if attachementID == "" {
+		return nil, goof.WithFields(fields, "attachementID is required")
 	}
 
-	resp := volumeattach.Delete(d.clientCompute, iid.ID, volumeID)
+	resp := volumeattach.Delete(d.clientCompute, iid.ID, attachementID)
 	if resp.Err != nil {
 		return nil, goof.WithFieldsE(fields, "error detaching volume", resp.Err)
 	}
