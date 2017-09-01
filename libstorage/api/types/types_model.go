@@ -243,6 +243,9 @@ type VolumeAttachment struct {
 	// The ID of the volume to which the attachment belongs.
 	VolumeID string `json:"volumeID" yaml:"volumeID,omitempty"`
 
+	// The ID of the attachment to which the attachment belongs.
+	AttachmentID string `json:"attachmentID" yaml:"attachmentID,omitempty"`
+
 	// Fields are additional properties that can be defined for this type.
 	Fields map[string]string `json:"fields,omitempty" yaml:",omitempty"`
 }

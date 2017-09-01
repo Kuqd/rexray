@@ -261,6 +261,7 @@ func translateVolumeV1(
 				VolumeID:   attachment["volume_id"].(string),
 				InstanceID: &types.InstanceID{ID: attachment["server_id"].(string), Driver: cinder.Name},
 				DeviceName: attachment["device"].(string),
+				AttachmentID: attachment["attachment_id"].(string),
 				Status:     "",
 			}
 			attachments = append(attachments, libstorageAttachment)
@@ -290,6 +291,7 @@ func translateVolume(
 				VolumeID:   attachment.VolumeID,
 				InstanceID: &types.InstanceID{ID: attachment.ServerID, Driver: cinder.Name},
 				DeviceName: attachment.Device,
+				AttachmentID: attachment.AttachmentID,
 				Status:     "",
 			}
 			attachments = append(attachments, libstorageAttachment)
@@ -633,11 +635,9 @@ func (d *driver) VolumeDetach(
 
 	if vol, err := d.VolumeInspect(ctx, volumeID, &types.VolumeInspectOpts{Attachments: types.VolAttReq}); err == nil {
 		if len(vol.Attachments) > 0 {
-			attachementID:= vol.Attachments[0].AttachmentID
-		}
-		else
-		{
-			return nil, "", err
+			attachementID:= vol.Attachments[0].attachementID
+		} else {
+			return nil, err
 		}
 	}
 
