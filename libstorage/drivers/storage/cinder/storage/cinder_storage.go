@@ -632,10 +632,11 @@ func (d *driver) VolumeDetach(
 	opts *types.VolumeDetachOpts) (*types.Volume, error) {
 
 	iid := context.MustInstanceID(ctx)
-
+	attachementID := ""
+	
 	if vol, err := d.VolumeInspect(ctx, volumeID, &types.VolumeInspectOpts{Attachments: types.VolAttReq}); err == nil {
 		if len(vol.Attachments) > 0 {
-			attachementID:= vol.Attachments[0].AttachmentID
+			attachementID := vol.Attachments[0].AttachmentID
 		} else {
 			return nil, err
 		}
