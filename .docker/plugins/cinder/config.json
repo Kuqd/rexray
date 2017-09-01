@@ -8,7 +8,7 @@
       "Description": "REX-Ray for Cinder Persistent Disks",
       "Documentation": "https://github.com/codedellemc/rexray/.docker/plugins/cinder",
       "Entrypoint": [
-        "/rexray.sh", "rexray", "start", "-f", "--nopid"
+        "/rexray.sh", "rexray", "start", "--nopid"
       ],
       "Env": [
         {
